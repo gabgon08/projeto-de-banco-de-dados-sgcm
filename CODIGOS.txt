@@ -1,0 +1,173 @@
+-- Banco de dados: `sistemacontroleestoque`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `entradas`
+--
+
+CREATE TABLE `entradas` (
+  `ID` int(11) NOT NULL,
+  `ID_PRODUTO` int(11) DEFAULT NULL,
+  `Quantidade` int(11) NOT NULL,
+  `DataEntrada` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `fornecedores`
+--
+
+CREATE TABLE `fornecedores` (
+  `ID` int(11) NOT NULL,
+  `Nome` varchar(255) NOT NULL,
+  `Contato` varchar(255) NOT NULL,
+  `Email` varchar(255) NOT NULL,
+  `Telefone` varchar(20) NOT NULL,
+  `Endereco` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `inventario`
+--
+
+CREATE TABLE `inventario` (
+  `ID` int(11) NOT NULL,
+  `ID_PRODUTO` int(11) DEFAULT NULL,
+  `QuantidadeInicial` int(11) NOT NULL,
+  `QuantidadeFinal` int(11) NOT NULL,
+  `DataRelatorio` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `produtos`
+--
+
+CREATE TABLE `produtos` (
+  `ID` int(11) NOT NULL,
+  `Nome` varchar(255) NOT NULL,
+  `Descricao` text NOT NULL,
+  `Preco` decimal(10,2) NOT NULL,
+  `QuantidadeEstoque` int(11) DEFAULT 0,
+  `ID_FORNECEDOR` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `saidas`
+--
+
+CREATE TABLE `saidas` (
+  `ID` int(11) NOT NULL,
+  `ID_PRODUTO` int(11) DEFAULT NULL,
+  `Quantidade` int(11) NOT NULL,
+  `DataSaida` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices de tabela `entradas`
+--
+ALTER TABLE `entradas`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ID_PRODUTO` (`ID_PRODUTO`);
+
+--
+-- Índices de tabela `fornecedores`
+--
+ALTER TABLE `fornecedores`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Índices de tabela `inventario`
+--
+ALTER TABLE `inventario`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ID_PRODUTO` (`ID_PRODUTO`);
+
+--
+-- Índices de tabela `produtos`
+--
+ALTER TABLE `produtos`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ID_FORNECEDOR` (`ID_FORNECEDOR`);
+
+--
+-- Índices de tabela `saidas`
+--
+ALTER TABLE `saidas`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ID_PRODUTO` (`ID_PRODUTO`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `entradas`
+--
+ALTER TABLE `entradas`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `fornecedores`
+--
+ALTER TABLE `fornecedores`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `inventario`
+--
+ALTER TABLE `inventario`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `produtos`
+--
+ALTER TABLE `produtos`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `saidas`
+--
+ALTER TABLE `saidas`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restrições para tabelas despejadas
+--
+
+--
+-- Restrições para tabelas `entradas`
+--
+ALTER TABLE `entradas`
+  ADD CONSTRAINT `entradas_ibfk_1` FOREIGN KEY (`ID_PRODUTO`) REFERENCES `produtos` (`ID`);
+
+--
+-- Restrições para tabelas `inventario`
+--
+ALTER TABLE `inventario`
+  ADD CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`ID_PRODUTO`) REFERENCES `produtos` (`ID`);
+
+--
+-- Restrições para tabelas `produtos`
+--
+ALTER TABLE `produtos`
+  ADD CONSTRAINT `produtos_ibfk_1` FOREIGN KEY (`ID_FORNECEDOR`) REFERENCES `fornecedores` (`ID`);
+
+--
+-- Restrições para tabelas `saidas`
+--
+ALTER TABLE `saidas`
+  ADD CONSTRAINT `saidas_ibfk_1` FOREIGN KEY (`ID_PRODUTO`) REFERENCES `produtos` (`ID`);
+COMMIT;
